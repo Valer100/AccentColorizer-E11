@@ -47,17 +47,33 @@ namespace AccentColorizer_E11
                     {
                         // Windows Spotlight has a different color used (WHY?)
                         raw = raw.Replace("#0C59A4", color);
+
+                        // Some icons from the File Explorer's home page
+                        if (file.Name.StartsWith("Home.EmptyState"))
+                        {
+                            raw = raw.Replace("#5B41D3", color);
+                        }
+                    }
+                    else
+                    {
+                        // Some icons from the File Explorer's home 
+
+                        if (file.Name.StartsWith("Home.EmptyState"))
+                        {
+                            raw = raw.Replace("#60CDFF", color).Replace("#7BD7F4", color).Replace("#1DB9EA", color);
+                        }
                     }
 
-                    try
-                    {
-                        Utility.WriteFile(path, raw);
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                        Utility.RunElevated(Program.ARGUMENT_TAKEOWN);
-                        break;
-                    }
+
+                        try
+                        {
+                            Utility.WriteFile(path, raw);
+                        }
+                        catch (UnauthorizedAccessException)
+                        {
+                            Utility.RunElevated(Program.ARGUMENT_TAKEOWN);
+                            break;
+                        }
                 }
             }
         }
