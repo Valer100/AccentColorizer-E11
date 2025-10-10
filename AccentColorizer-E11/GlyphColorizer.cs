@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Windows.Forms;
 
 namespace AccentColorizer_E11
 {
@@ -44,6 +45,33 @@ namespace AccentColorizer_E11
             var currentColorSpotlight = Utility.BlendColors("#251840", currentColor, 82);
             var replacementColorSpotlight = Utility.BlendColors("#251840", replacementColor, 82);
 
+            string defaultGradientStartColor, defaultGradientEndColor;
+            string currentGradientStartColor, currentGradientEndColor;
+            string replacementGradientStartColor, replacementGradientEndColor;
+
+            if ("light".Equals(theme))
+            {
+                defaultGradientStartColor = defaultColor;
+                defaultGradientEndColor = Utility.BlendColors("#C600D2", defaultColor, 117);
+
+                currentGradientStartColor = currentColor;
+                currentGradientEndColor = Utility.BlendColors("#C600D2", currentColor, 117);
+
+                replacementGradientStartColor = replacementColor;
+                replacementGradientEndColor = Utility.BlendColors("#C600D2", replacementColor, 117);
+            }
+            else
+            {
+                defaultGradientStartColor = Utility.BlendColors("#B5FCFF", defaultColor, 49);
+                defaultGradientEndColor = Utility.BlendColors("#D2FEE0", defaultColor, 90);
+
+                currentGradientStartColor = Utility.BlendColors("#B5FCFF", currentColor, 49);
+                currentGradientEndColor = Utility.BlendColors("#D2FEE0", currentColor, 90);
+
+                replacementGradientStartColor = Utility.BlendColors("#B5FCFF", replacementColor, 49);
+                replacementGradientEndColor = Utility.BlendColors("#D2FEE0", replacementColor, 90);
+            }
+
             foreach (var basePath in paths)
             {
                 var dir = new DirectoryInfo(basePath + theme);
@@ -53,7 +81,13 @@ namespace AccentColorizer_E11
                     var path = file.FullName;
 
                     var raw = Utility.ReadFile(path);
-                    raw = raw.Replace(currentColor, replacementColor).Replace(defaultColor, replacementColor);
+
+                    raw = raw.Replace(currentColor, replacementColor)
+                             .Replace(defaultColor, replacementColor)
+                             .Replace(currentGradientStartColor, replacementGradientStartColor)
+                             .Replace(currentGradientEndColor, replacementGradientEndColor)
+                             .Replace(defaultGradientStartColor, replacementGradientStartColor)
+                             .Replace(defaultGradientEndColor, replacementGradientEndColor);
 
                     if ("light".Equals(theme))
                     {
